@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusList — To-Do Workspace</title>
+<style>
+:root{--bg:#101010;--panel:#191919;--panel2:#202020;--line:#333;--text:#f4f1e9;--muted:#aaa69d;--accent:#e9e3d5;--danger:#ff7777;--good:#a7d7ad}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer;transition:.18s ease}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1150px;margin:auto;padding:26px 20px 40px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:30px}.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:var(--accent);color:#151515;display:grid;place-items:center;font-weight:900;font-size:22px}.brand h1{font-size:20px;margin:0;letter-spacing:-.5px}.brand p{margin:0;color:var(--muted);font-size:12px}.top-actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:10px 14px;font-weight:650}.btn:hover{transform:translateY(-1px);border-color:#666}.btn.primary{background:var(--accent);color:#141414;border-color:var(--accent)}.btn.danger{color:var(--danger)}.btn.small{padding:6px 9px;font-size:12px;border-radius:8px}.hero{margin-bottom:22px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-weight:700}.hero h2{font-size:clamp(27px,4vw,40px);letter-spacing:-1.4px;line-height:1.1;margin:8px 0}.hero p{color:var(--muted);margin:8px 0 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.stat{padding:17px;background:var(--panel);border:1px solid var(--line);border-radius:14px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:26px;margin-top:3px}.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}.panel-head{padding:17px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head h3{font-size:14px;margin:0}.lists{padding:10px}.list-btn{width:100%;display:flex;justify-content:space-between;gap:10px;text-align:left;padding:11px 12px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--text);margin-bottom:4px}.list-btn.active{background:#2b2b2b;border-color:#414141}.list-btn .count{color:var(--muted);font-size:12px}.add-list{margin:8px 10px 13px;width:calc(100% - 20px)}.workspace{min-width:0}.task-toolbar{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line)}.list-title{font-size:20px;font-weight:750;letter-spacing:-.4px}.list-subtitle{font-size:12px;color:var(--muted);margin-top:2px}.toolbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.field{width:100%;background:#111;border:1px solid #3b3b3b;border-radius:10px;color:var(--text);padding:11px 12px;min-width:0}.field::placeholder{color:#777}.add-task{padding:16px 18px;border-bottom:1px solid var(--line)}.task-entry{display:grid;grid-template-columns:minmax(0,1fr) 135px 150px auto;gap:8px}.filters{padding:12px 18px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line)}.filter{border:1px solid transparent;background:transparent;color:var(--muted);padding:6px 10px;border-radius:8px;font-size:12px}.filter.active{background:#303030;border-color:#414141;color:var(--text)}.search{margin-left:auto;max-width:210px;padding:7px 10px;font-size:12px}.task-list{padding:8px 18px 18px}.task{display:flex;align-items:flex-start;gap:12px;padding:14px 2px;border-bottom:1px solid #303030}.task:last-child{border-bottom:0}.task-check{appearance:none;flex:0 0 19px;width:19px;height:19px;margin:2px 0 0;border:1.5px solid #777;border-radius:6px;background:transparent;display:grid;place-items:center;cursor:pointer}.task-check:checked{background:var(--accent);border-color:var(--accent)}.task-check:checked:after{content:"✓";color:#111;font-size:13px;font-weight:900}.task-content{flex:1;min-width:0}.task-name{font-weight:600;overflow-wrap:anywhere}.task.completed .task-name{text-decoration:line-through;color:#85827b}.task-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px;color:var(--muted);font-size:11px}.pill{border:1px solid #444;padding:2px 7px;border-radius:999px}.pill.high{color:#ffaaaa;border-color:#684343}.pill.medium{color:#e9d19c;border-color:#665a3f}.pill.low{color:#b4d9b8;border-color:#405c44}.task-actions{display:flex;gap:5px;opacity:.8}.empty{text-align:center;padding:45px 15px;color:var(--muted)}.empty .symbol{font-size:28px;margin-bottom:7px}.empty strong{display:block;color:var(--text);margin-bottom:4px}.footer{text-align:center;color:#777;font-size:11px;margin-top:28px}.overlay{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:18px;z-index:10;overflow:auto}.overlay.show{display:flex}.modal{width:min(100%,480px);background:#191919;border:1px solid #444;border-radius:18px;padding:24px;box-shadow:0 24px 80px #0008}.modal h2{margin:0 0 5px;font-size:24px}.modal p{color:var(--muted);margin:0 0 18px;font-size:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-field{display:flex;flex-direction:column;gap:6px}.form-field.full{grid-column:1/-1}.form-field label{font-size:12px;color:#c8c4bb}.form-field .field{padding:10px}.form-actions{display:flex;gap:8px;margin-top:17px}.form-actions .btn{flex:1}.notice{font-size:12px;color:var(--muted);margin-top:12px}.message{color:var(--danger);font-size:12px;min-height:18px;margin-top:8px}.admin-table{width:100%;border-collapse:collapse;font-size:12px}.admin-table th,.admin-table td{padding:9px 7px;border-bottom:1px solid #333;text-align:left;vertical-align:top;overflow-wrap:anywhere}.admin-table th{color:var(--muted)}.admin-scroll{max-height:55vh;overflow:auto}.hidden{display:none!important}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:22px}.task-entry{grid-template-columns:1fr 1fr}.task-entry .task-text{grid-column:1/-1}.task-entry button{grid-column:1/-1}.task-toolbar{align-items:flex-start;flex-direction:column}.toolbar-right{width:100%}.search{margin-left:0;max-width:none;flex:1}.topbar{align-items:flex-start}.brand p{max-width:160px}.form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <div class="brand"><div class="logo">✓</div><div><h1>FocusList</h1><p>Make room for what matters.</p></div></div>
+    <div class="top-actions"><button class="btn" id="profileBtn">My profile</button><button class="btn" id="adminBtn">Admin access</button><button class="btn" id="logoutBtn">Log out</button></div>
+  </header>
+  <section class="hero"><div class="eyebrow">Your personal workspace</div><h2>One task at a time.<br>Real progress every day.</h2><p>Capture your tasks, set priorities, and keep moving forward.</p></section>
+  <section class="stats">
+    <div class="stat"><span>Total tasks</span><strong id="totalStat">0</strong></div>
+    <div class="stat"><span>Completed</span><strong id="doneStat">0</strong></div>
+    <div class="stat"><span>Still to do</span><strong id="remainingStat">0</strong></div>
+  </section>
+  <main class="layout">
+    <aside class="panel">
+      <div class="panel-head"><h3>MY LISTS</h3><span class="eyebrow" id="listCount">0 lists</span></div>
+      <div class="lists" id="lists"></div>
+      <button class="btn add-list" id="addListBtn">＋ Create a list</button>
+    </aside>
+    <section class="panel workspace">
+      <div class="task-toolbar">
+        <div><div class="list-title" id="activeTitle">My tasks</div><div class="list-subtitle" id="activeSubtitle">Your next step starts here.</div></div>
+        <div class="toolbar-right"><button class="btn small" id="renameListBtn">Rename</button><button class="btn small danger" id="deleteListBtn">Delete list</button></div>
+      </div>
+      <form class="add-task" id="taskForm">
+        <div class="task-entry">
+          <input class="field task-text" id="taskInput" maxlength="180" placeholder="What do you need to get done?" required>
+          <select class="field" id="priorityInput" aria-label="Priority"><option value="medium">Medium priority</option><option value="high">High priority</option><option value="low">Low priority</option></select>
+          <input class="field" id="dueInput" type="date" aria-label="Choose due date (optional)" title="Optional: choose a due date for this task">
+          <button class="btn primary" type="submit">＋ Add task</button>
+        </div>
+      </form>
+      <div class="filters">
+        <button class="filter active" data-filter="all">All tasks</button><button class="filter" data-filter="active">To do</button><button class="filter" data-filter="completed">Completed</button>
+        <input class="field search" id="searchInput" placeholder="Search tasks…" aria-label="Search tasks">
+      </div>
+      <div class="task-list" id="taskList"></div>
+    </section>
+  </main>
+  <div class="footer">Developed by Adham Ismail (Cyber Nest) · Your tasks are saved in this browser.</div>
+</div>
+
+<div class="overlay" id="authOverlay">
+  <div class="modal">
+    <h2 id="authTitle">Sign in to FocusList</h2><p id="authDescription">Sign in to open your saved task workspace.</p>
+    <div class="form-actions" style="margin:0 0 16px"><button class="btn primary" type="button" id="showSigninBtn">Sign in</button><button class="btn" type="button" id="showSignupBtn">Create account</button></div>
+    <form id="signinForm">
+      <div class="form-field"><label for="signinEmail">Email address</label><input class="field" id="signinEmail" type="email" required autocomplete="email"></div>
+      <div class="form-field" style="margin-top:12px"><label for="signinPassword">Password</label><input class="field" id="signinPassword" type="password" required autocomplete="current-password"></div>
+      <div class="message" id="signinMessage"></div><div class="form-actions"><button class="btn primary" type="submit">Sign in</button></div>
+    </form>
+    <form id="createAccountForm" class="hidden">
+      <div class="form-grid">
+        <div class="form-field full"><label for="newFullName">Full name</label><input class="field" id="newFullName" required maxlength="100" autocomplete="name"></div>
+        <div class="form-field"><label for="newPhone">Phone number</label><input class="field" id="newPhone" type="tel" required maxlength="30" autocomplete="tel"></div>
+        <div class="form-field"><label for="newEmail">Email address</label><input class="field" id="newEmail" type="email" required maxlength="150" autocomplete="email"></div>
+        <div class="form-field full"><label for="newRole">What best describes you?</label><select class="field" id="newRole" required><option value="">Choose one…</option><option>Student</option><option>Business owner</option><option>Employee</option><option>Others</option></select></div>
+        <div class="form-field full"><label for="newPassword">Create password (at least 6 characters)</label><input class="field" id="newPassword" type="password" minlength="6" required autocomplete="new-password"></div>
+      </div>
+      <div class="message" id="signupMessage"></div><div class="form-actions"><button class="btn primary" type="submit">Create account</button></div>
+    </form>
+    <div class="notice">Demo account system: profiles and passwords are stored in this browser only. Do not use a password you use elsewhere. This is not secure server-side authentication.</div>
+  </div>
+</div>
+
+<div class="overlay" id="profileOverlay">
+  <div class="modal"><h2>My profile</h2><p>Your workspace profile stored on this device.</p><div id="profileDetails"></div><div class="form-actions"><button class="btn" data-close="profileOverlay">Close</button><button class="btn danger" id="resetProfileBtn">Reset local profile</button></div></div>
+</div>
+<div class="overlay" id="adminLoginOverlay">
+  <div class="modal"><h2>Admin access</h2><p>Enter the admin code to view profiles saved on this browser.</p><form id="adminForm"><div class="form-field"><label for="adminCode">Admin code</label><input class="field" id="adminCode" type="password" required autocomplete="off"></div><div class="message" id="adminMessage"></div><div class="form-actions"><button class="btn" type="button" data-close="adminLoginOverlay">Cancel</button><button class="btn primary" type="submit">Open dashboard</button></div></form><div class="notice">The admin code is built into this demo HTML, so it is not secure for real user data.</div></div>
+</div>
+<div class="overlay" id="adminOverlay">
+  <div class="modal" style="width:min(100%,850px)"><h2>Admin dashboard</h2><p>Local profiles registered in this browser only.</p><div id="adminSummary" class="notice"></div><div class="admin-scroll"><table class="admin-table"><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead><tbody id="adminRows"></tbody></table></div><div class="form-actions"><button class="btn" data-close="adminOverlay">Close dashboard</button><button class="btn danger" id="clearUsersBtn">Clear local profiles</button></div></div>
+</div>
+<div class="overlay" id="textOverlay">
+  <div class="modal"><h2 id="textModalTitle">Create a list</h2><p id="textModalDescription">Give this list a name.</p><form id="textModalForm"><div class="form-field"><label for="textModalInput">Name</label><input class="field" id="textModalInput" maxlength="60" required></div><div class="message" id="textModalMessage"></div><div class="form-actions"><button class="btn" type="button" data-close="textOverlay">Cancel</button><button class="btn primary" type="submit" id="textModalSubmit">Save</button></div></form></div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const ADMIN_CODE = '1975';
+  const $ = id => document.getElementById(id);
+  const keys = {users:'focuslist_users_v1',session:'focuslist_session_v1',data:'focuslist_data_v1'};
+  const safeParse = (value, fallback) => { try { return JSON.parse(value) ?? fallback; } catch { return fallback; } };
+  const read = (key, fallback) => safeParse(localStorage.getItem(key), fallback);
+  const write = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+  let users = read(keys.users, []);
+  let currentUserId = sessionStorage.getItem(keys.session);
+  let data = read(keys.data, {});
+  let activeListId = null, currentFilter = 'all', modalAction = null;
+  const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2));
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const currentUser = () => users.find(u => u.id === currentUserId);
+  function saveUsers(){ write(keys.users, users); }
+  function saveData(){ write(keys.data, data); }
+  function ensureWorkspace(userId) {
+    if (!data[userId]) data[userId] = {activeListId:null, lists:[{id:uid(),name:'My tasks',tasks:[]}]};
+    if (!Array.isArray(data[userId].lists) || !data[userId].lists.length) data[userId].lists = [{id:uid(),name:'My tasks',tasks:[]}];
+    if (!data[userId].lists.some(l => l.id === data[userId].activeListId)) data[userId].activeListId = data[userId].lists[0].id;
+    saveData();
+  }
+  function openOverlay(id){ $(id).classList.add('show'); }
+  function closeOverlay(id){ $(id).classList.remove('show'); }
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeOverlay(b.dataset.close)));
+  document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if(e.target === o) closeOverlay(o.id); }));
+  function showAuth(mode='signin') {
+    $('signinForm').classList.toggle('hidden', mode !== 'signin');
+    $('createAccountForm').classList.toggle('hidden', mode !== 'signup');
+    $('showSigninBtn').classList.toggle('primary', mode === 'signin');
+    $('showSignupBtn').classList.toggle('primary', mode === 'signup');
+    $('authTitle').textContent = mode === 'signin' ? 'Sign in to FocusList' : 'Create your FocusList account';
+    $('authDescription').textContent = mode === 'signin' ? 'Sign in to open your saved task workspace.' : 'Create an account to keep your own task lists in this browser.';
+    $('signinMessage').textContent = ''; $('signupMessage').textContent = '';
+    openOverlay('authOverlay');
+  }
+  $('showSigninBtn').addEventListener('click', () => showAuth('signin'));
+  $('showSignupBtn').addEventListener('click', () => showAuth('signup'));
+  $('signinForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = $('signinEmail').value.trim().toLowerCase(), password = $('signinPassword').value;
+    const user = users.find(u => String(u.email).toLowerCase() === email && u.password === password);
+    if (!user) { $('signinMessage').textContent = 'Email or password is incorrect. If you are new, create an account first.'; return; }
+    currentUserId = user.id; sessionStorage.setItem(keys.session, currentUserId); closeOverlay('authOverlay'); ensureWorkspace(currentUserId); activeListId = data[currentUserId].activeListId; render(); $('signinForm').reset();
+  });
+  $('createAccountForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const fullName=$('newFullName').value.trim(), phone=$('newPhone').value.trim(), email=$('newEmail').value.trim().toLowerCase(), role=$('newRole').value, password=$('newPassword').value;
+    if (!fullName || !phone || !email || !role || password.length < 6) { $('signupMessage').textContent='Please complete every field and use a password with at least 6 characters.'; return; }
+    if (users.some(u => String(u.email).toLowerCase() === email)) { $('signupMessage').textContent='An account with this email already exists. Please sign in.'; return; }
+    const user={id:uid(),fullName,phone,email,role,password,joined:new Date().toISOString()}; users.push(user); saveUsers(); currentUserId=user.id; sessionStorage.setItem(keys.session,currentUserId); ensureWorkspace(currentUserId); activeListId=data[currentUserId].activeListId; closeOverlay('authOverlay'); $('createAccountForm').reset(); render();
+  });
+  function startApp() {
+    const user = currentUser();
+    if (!user) { currentUserId=null; sessionStorage.removeItem(keys.session); $('logoutBtn').classList.add('hidden'); showAuth('signin'); return; }
+    $('logoutBtn').classList.remove('hidden'); closeOverlay('authOverlay'); ensureWorkspace(user.id); activeListId=data[user.id].activeListId; render();
+  }
+  $('logoutBtn').addEventListener('click', () => { currentUserId=null; sessionStorage.removeItem(keys.session); startApp(); });
+  startApp();
+  $('profileBtn').addEventListener('click', () => {
+    const u = currentUser(); if (!u) return;
+    $('profileDetails').innerHTML = `<div class="form-grid"><div class="form-field"><label>Workspace</label><div>${esc(u.fullName)}</div></div><div class="form-field"><label>Type</label><div>${esc(u.role)}</div></div></div><div class="notice">No account needed. Your tasks are saved locally in this browser.</div>`;
+    openOverlay('profileOverlay');
+  });
+  $('resetProfileBtn').addEventListener('click', () => {
+    if (!confirm('Clear all task lists and tasks in this browser? This cannot be undone.')) return;
+    users = users.filter(u => u.id !== currentUserId); delete data[currentUserId]; saveUsers(); saveData(); currentUserId=null; sessionStorage.removeItem(keys.session); closeOverlay('profileOverlay'); startApp();
+  });
+  $('adminBtn').addEventListener('click', () => { $('adminCode').value=''; $('adminMessage').textContent=''; openOverlay('adminLoginOverlay'); });
+  $('adminForm').addEventListener('submit', e => {
+    e.preventDefault();
+    if ($('adminCode').value !== ADMIN_CODE) { $('adminMessage').textContent='Incorrect admin code. Please try again.'; return; }
+    closeOverlay('adminLoginOverlay'); renderAdmin(); openOverlay('adminOverlay');
+  });
+  function renderAdmin() {
+    $('adminSummary').textContent = `${users.length} local profile${users.length===1?'':'s'} found. Profiles are not shared between browsers or devices.`;
+    $('adminRows').innerHTML = users.length ? users.map(u => `<tr><td>${esc(u.fullName)}</td><td>${esc(u.phone)}</td><td>${esc(u.email)}</td><td>${esc(u.role)}</td><td>${esc(new Date(u.joined).toLocaleDateString())}</td></tr>`).join('') : '<tr><td colspan="5">No profiles saved yet.</td></tr>';
+  }
+  $('clearUsersBtn').addEventListener('click', () => {
+    if (!confirm('Delete every locally saved profile and all their task lists? This cannot be undone.')) return;
+    users=[]; data={}; saveUsers(); saveData(); renderAdmin(); currentUserId=null; sessionStorage.removeItem(keys.session); closeOverlay('adminOverlay'); startApp();
+  });
+  function workspace(){ const u=currentUser(); if(!u)return null; ensureWorkspace(u.id); return data[u.id]; }
+  function activeList(){ const w=workspace(); return w?.lists.find(l=>l.id===activeListId) || w?.lists[0]; }
+  function render() {
+    const u=currentUser(), w=workspace(); if(!u||!w)return;
+    if(!w.lists.some(l=>l.id===activeListId)) activeListId=w.lists[0].id;
+    w.activeListId=activeListId; saveData();
+    $('lists').innerHTML = w.lists.map(l => `<button class="list-btn ${l.id===activeListId?'active':''}" data-list="${esc(l.id)}"><span>☷ &nbsp;${esc(l.name)}</span><span class="count">${l.tasks.filter(t=>!t.completed).length}</span></button>`).join('');
+    $('listCount').textContent = `${w.lists.length} list${w.lists.length===1?'':'s'}`;
+    $('lists').querySelectorAll('[data-list]').forEach(b=>b.addEventListener('click',()=>{activeListId=b.dataset.list;currentFilter='all';updateFilterButtons();render();}));
+    const list=activeList(); if(!list)return;
+    $('activeTitle').textContent=list.name;
+    $('activeSubtitle').textContent=`${list.tasks.length} task${list.tasks.length===1?'':'s'} · ${list.tasks.filter(t=>t.completed).length} completed`;
+    const allTasks=w.lists.flatMap(l=>l.tasks);
+    $('totalStat').textContent=allTasks.length;
+    $('doneStat').textContent=allTasks.filter(t=>t.completed).length;
+    $('remainingStat').textContent=allTasks.filter(t=>!t.completed).length;
+    const search=$('searchInput').value.trim().toLowerCase();
+    const visible=list.tasks.filter(t=>(currentFilter==='all'||(currentFilter==='active'&&!t.completed)||(currentFilter==='completed'&&t.completed))&&t.text.toLowerCase().includes(search));
+    $('taskList').innerHTML=visible.length ? visible.map(t=>`<div class="task ${t.completed?'completed':''}" data-task="${esc(t.id)}">
+      <input type="checkbox" class="task-check" aria-label="Mark task complete" ${t.completed?'checked':''}>
+      <div class="task-content"><div class="task-name">${esc(t.text)}</div><div class="task-meta"><span class="pill ${esc(t.priority)}">${esc(t.priority[0].toUpperCase()+t.priority.slice(1))} priority</span>${t.due?`<span class="pill">Due ${esc(t.due)}</span>`:''}<span>${t.completed?'Completed':'Added '+esc(new Date(t.created).toLocaleDateString())}</span></div></div>
+      <div class="task-actions"><button class="btn small edit-task" title="Edit task">Edit</button><button class="btn small danger delete-task" title="Delete task">Delete</button></div></div>`).join('') : `<div class="empty"><div class="symbol">${search?'⌕':'✓'}</div><strong>${search?'No matching tasks':'Nothing here yet'}</strong><span>${search?'Try a different search.':currentFilter==='completed'?'Completed tasks will appear here.':'Add a task above to get started.'}</span></div>`;
+    $('taskList').querySelectorAll('[data-task]').forEach(row=>{
+      const task=list.tasks.find(t=>t.id===row.dataset.task); if(!task)return;
+      row.querySelector('.task-check').addEventListener('change',e=>{task.completed=e.target.checked;saveData();render();});
+      row.querySelector('.edit-task').addEventListener('click',()=>{const next=prompt('Edit task:',task.text);if(next===null)return;if(!next.trim()){alert('Task cannot be empty.');return;}task.text=next.trim().slice(0,180);saveData();render();});
+      row.querySelector('.delete-task').addEventListener('click',()=>{if(confirm(`Delete "${task.text}"?`)){list.tasks=list.tasks.filter(t=>t.id!==task.id);saveData();render();}});
+    });
+    $('deleteListBtn').disabled=w.lists.length<=1;
+    $('deleteListBtn').style.opacity=w.lists.length<=1?'.4':'1';
+  }
+  $('taskForm').addEventListener('submit',e=>{
+    e.preventDefault();const list=activeList(),text=$('taskInput').value.trim();if(!list||!text)return;
+    list.tasks.push({id:uid(),text:text.slice(0,180),priority:$('priorityInput').value,due:$('dueInput').value,completed:false,created:new Date().toISOString()});
+    $('taskInput').value='';$('dueInput').value='';$('priorityInput').value='medium';currentFilter='all';updateFilterButtons();saveData();render();$('taskInput').focus();
+  });
+  $('searchInput').addEventListener('input',render);
+  document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{currentFilter=b.dataset.filter;updateFilterButtons();render();}));
+  function updateFilterButtons(){document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===currentFilter));}
+  function showTextModal(title,description,placeholder,action,initial=''){$('textModalTitle').textContent=title;$('textModalDescription').textContent=description;$('textModalInput').placeholder=placeholder;$('textModalInput').value=initial;$('textModalMessage').textContent='';modalAction=action;openOverlay('textOverlay');setTimeout(()=>$('textModalInput').focus(),20);}
+  $('addListBtn').addEventListener('click',()=>showTextModal('Create a list','Separate school, work, personal goals, or any project.','e.g. School tasks','create'));
+  $('renameListBtn').addEventListener('click',()=>{const l=activeList();if(l)showTextModal('Rename list','Choose a new name for this list.','List name','rename',l.name);});
+  $('deleteListBtn').addEventListener('click',()=>{const w=workspace(),l=activeList();if(!w||!l||w.lists.length<=1)return;if(!confirm(`Delete the list "${l.name}" and all its tasks?`))return;w.lists=w.lists.filter(x=>x.id!==l.id);activeListId=w.lists[0].id;saveData();render();});
+  $('textModalForm').addEventListener('submit',e=>{
+    e.preventDefault();const name=$('textModalInput').value.trim();if(!name){$('textModalMessage').textContent='Please enter a name.';return;}
+    const w=workspace();if(!w)return;
+    if(modalAction==='create'){if(w.lists.some(l=>l.name.toLowerCase()===name.toLowerCase())){$('textModalMessage').textContent='A list with that name already exists.';return;}const l={id:uid(),name:name.slice(0,60),tasks:[]};w.lists.push(l);activeListId=l.id;currentFilter='all';updateFilterButtons();}
+    if(modalAction==='rename'){const l=activeList();if(w.lists.some(x=>x.id!==l.id&&x.name.toLowerCase()===name.toLowerCase())){$('textModalMessage').textContent='A list with that name already exists.';return;}l.name=name.slice(0,60);}
+    saveData();closeOverlay('textOverlay');render();
+  });
+  // Session remains active only in this browser tab/session; data persists locally.
+  startApp();
+})();
+</script>
+</body>
+</html>
